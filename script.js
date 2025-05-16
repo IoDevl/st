@@ -1,10 +1,37 @@
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.setAttribute('onselectstart', 'return false');
+    document.body.setAttribute('oncontextmenu', 'return false');
+    
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    document.addEventListener('mousedown', function(e) {
+        if (e.detail > 1) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+});
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
         const targetSection = document.querySelector(targetId);
-        const navHeight = document.querySelector('nav').offsetHeight;
-        const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset;
         
         window.scrollTo({
             top: targetPosition,
